@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.ums.mapper.UmsStudentMapper">
+    
+    <resultMap type="UmsStudent" id="UmsStudentResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="age"    column="age"    />
+        <result property="classId"    column="class_id"    />
+    </resultMap>
+
+    <resultMap type="UmsStudent" id="UmsStudentWithUmsClassResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="age"    column="age"    />
+        <result property="classId"    column="class_id"    />
+        <association property="umsClass" javaType="UmsClass">
+            <result property="id" column="class_id"/>
+            <result property="name" column="class_name"/>
+        </association>
+    </resultMap>
+
+    <sql id="selectUmsStudentVo">
+        select ums_student.id as id, ums_student.name as name, age, class_id, ums_class.name as class_name from ums_student
+        left join ums_class on ums_student.class_id = ums_class.id
+    </sql>
+
+    <select id="selectUmsStudentList" parameterType="UmsStudent" resultMap="UmsStudentWithUmsClassResult">
+        <include refid="selectUmsStudentVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="classId != null "> and class_id = #{classId}</if>
+        </where>
+    </select>
+    
+    <select id="selectUmsStudentById" parameterType="Integer" resultMap="UmsStudentWithUmsClassResult">
+        <include refid="selectUmsStudentVo"/>
+        where ums_student.id = #{id}
+    </select>
+
+    <insert id="insertUmsStudent" parameterType="UmsStudent" useGeneratedKeys="true" keyProperty="id">
+        insert into ums_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="age != null">age,</if>
+            <if test="classId != null">class_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="age != null">#{age},</if>
+            <if test="classId != null">#{classId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUmsStudent" parameterType="UmsStudent">
+        update ums_student
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="classId != null">class_id = #{classId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUmsStudentById" parameterType="Integer">
+        delete from ums_student where id = #{id}
+    </delete>
+
+    <delete id="deleteUmsStudentByIds" parameterType="String">
+        delete from ums_student where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

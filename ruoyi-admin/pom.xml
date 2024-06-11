@@ -67,6 +67,12 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ums</artifactId>
+            <version>4.7.9</version>
+        </dependency>
+
     </dependencies>
 
     <build>
