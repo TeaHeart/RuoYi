@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mms.mapper.MmsProductTypeMapper">
+    
+    <resultMap type="MmsProductType" id="MmsProductTypeResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="picture"    column="picture"    />
+        <result property="content"    column="content"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectMmsProductTypeVo">
+        select id, name, picture, content, create_time, update_time from mms_product_type
+    </sql>
+
+    <select id="selectMmsProductTypeList" parameterType="MmsProductType" resultMap="MmsProductTypeResult">
+        <include refid="selectMmsProductTypeVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectMmsProductTypeById" parameterType="Long" resultMap="MmsProductTypeResult">
+        <include refid="selectMmsProductTypeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMmsProductType" parameterType="MmsProductType" useGeneratedKeys="true" keyProperty="id">
+        insert into mms_product_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="picture != null">picture,</if>
+            <if test="content != null">content,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="picture != null">#{picture},</if>
+            <if test="content != null">#{content},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMmsProductType" parameterType="MmsProductType">
+        update mms_product_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="picture != null">picture = #{picture},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMmsProductTypeById" parameterType="Long">
+        delete from mms_product_type where id = #{id}
+    </delete>
+
+    <delete id="deleteMmsProductTypeByIds" parameterType="String">
+        delete from mms_product_type where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
