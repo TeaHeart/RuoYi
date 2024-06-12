@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mms.mapper.MmsProduceLikeMapper">
+    
+    <resultMap type="MmsProduceLike" id="MmsProduceLikeResult">
+        <result property="id"    column="id"    />
+        <result property="productId"    column="product_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectMmsProduceLikeVo">
+        select id, product_id, user_id, create_time, update_time from mms_produce_like
+    </sql>
+
+    <select id="selectMmsProduceLikeList" parameterType="MmsProduceLike" resultMap="MmsProduceLikeResult">
+        <include refid="selectMmsProduceLikeVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectMmsProduceLikeById" parameterType="Long" resultMap="MmsProduceLikeResult">
+        <include refid="selectMmsProduceLikeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMmsProduceLike" parameterType="MmsProduceLike" useGeneratedKeys="true" keyProperty="id">
+        insert into mms_produce_like
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productId != null">product_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productId != null">#{productId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMmsProduceLike" parameterType="MmsProduceLike">
+        update mms_produce_like
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMmsProduceLikeById" parameterType="Long">
+        delete from mms_produce_like where id = #{id}
+    </delete>
+
+    <delete id="deleteMmsProduceLikeByIds" parameterType="String">
+        delete from mms_produce_like where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

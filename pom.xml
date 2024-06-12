@@ -204,6 +204,7 @@
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
         <module>ums</module>
+        <module>mms</module>
     </modules>
     <packaging>pom</packaging>
 

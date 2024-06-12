@@ -73,6 +73,12 @@
             <version>4.7.9</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>mms</artifactId>
+            <version>4.7.9</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -101,7 +107,7 @@
                     <warName>${project.artifactId}</warName>
                 </configuration>   
             </plugin>   
-            <!-- YUI Compressor (CSS/JS压缩) 
+            <!--&lt;!&ndash; YUI Compressor (CSS/JS压缩) -->
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
@@ -133,7 +139,8 @@
                         <exclude>**/bootstrap-table/**</exclude>
                     </excludes>
                 </configuration>
-            </plugin> -->
+            </plugin>
+            <!--&ndash;&gt;-->
         </plugins>
         <finalName>${project.artifactId}</finalName>
     </build>
